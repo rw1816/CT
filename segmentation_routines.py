@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Tue Feb 16 16:37:51 2021
 
@@ -74,7 +73,8 @@ def create_img_dict(save_path):
     
     else:
         # define image processing parameters
-        img_params = {"mask thresh" : 10000,
+        img_params = {"shape" : (1000,1000,1000),
+                      "mask thresh" : 10000,
                       "min pore" : 3,
                       "mask max hole" : 20,
                       "kernel 1" : 7,
@@ -87,3 +87,10 @@ def create_img_dict(save_path):
             pickle.dump(img_params, p)
         
     return img_params
+
+def check_changes(img_params, root_dir, scan_name):
+    old_params=create_img_dict(os.path.join(root_dir, (scan_name[:-4]+'_imgParams.pickle')))
+    if old_params!=img_params:
+        print('Parameters changed, overwriting...')
+        with open(os.path.join(root_dir, (scan_name[:-4]+'_imgParams.pickle')), 'wb') as p:
+            pickle.dump(img_params, p)
